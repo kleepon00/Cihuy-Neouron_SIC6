@@ -1,18 +1,20 @@
-from machine import Pin, ADC
+from machine import Pin
 import ujson
 import network
 import utime as time
 import dht
 import urequests as requests
 
-
+# Konfigurasi WiFi dan Server
 DEVICE_ID = "esp32-cihuy-neuron"
 WIFI_SSID = "SUGENG FAMS"
 WIFI_PASSWORD = "liantina10810"
-TOKEN = "BBUS-cRGUl6aSBHHiw5ASS9JOhoIQZCQOd1"
+FLASK_SERVER_IP = "192.168.1.4"  # Ganti dengan IP komputer yang menjalankan Flask
+FLASK_PORT = "2008"
 
-LED_PIN = Pin(4, Pin.OUT)
-DHT_PIN = Pin(2)
+# Pin Setup
+LED_PIN = Pin(2, Pin.OUT)
+DHT_PIN = Pin(15)
 PIR_PIN = Pin(19, Pin.IN)
 BUZZER_PIN = Pin(18, Pin.OUT)
 
@@ -20,68 +22,72 @@ dht_sensor = dht.DHT11(DHT_PIN)
 led = Pin(LED_PIN, Pin.OUT)
 buzzer = Pin(BUZZER_PIN, Pin.OUT)
 
+# Koneksi ke WiFi
 wifi_client = network.WLAN(network.STA_IF)
 wifi_client.active(True)
-print("Connecting device to WiFi")
+print("Connecting to WiFi...")
 wifi_client.connect(WIFI_SSID, WIFI_PASSWORD)
 
 while not wifi_client.isconnected():
-    print("Connecting")
-    time.sleep(0.1)
-    
+    print("Connecting...")
+    time.sleep(0.5)
+
 print("WiFi Connected!")
 print(wifi_client.ifconfig())
 
-def create_json_data(temperature, humidity,pir,buzzer_state):
-    data = ujson.dumps({
+# Fungsi untuk membuat JSON data
+def create_json_data(temperature, humidity, motion, buzzer_state):
+    return ujson.dumps({
         "device_id": DEVICE_ID,
         "temp": temperature,
         "humidity": humidity,
-        "pir": pir,
+        "pir": motion,
         "buzzer": buzzer_state,
         "type": "sensor"
     })
-    return data
 
-def send_data(temperature, humidity,pir,buzzer_status,led_status):
-    url = "http://industrial.api.ubidots.com/api/v1.6/devices/" + DEVICE_ID
-    headers = {"Content-Type": "application/json", "X-Auth-Token": TOKEN}
+# Fungsi untuk mengirim data ke Flask
+def send_data(temperature, humidity, motion, buzzer_status, led_status):
+    url = f"http://{FLASK_SERVER_IP}:{FLASK_PORT}/data"
+    headers = {"Content-Type": "application/json"}
     data = {
         "temp": temperature,
         "humidity": humidity,
-        "pir": pir,
+        "pir": motion,
         "buzzer_status": buzzer_status,
         "led_status": led_status
     }
-    
-    try :
-        response = requests.post(url, json=data, headers=headers)
-        print("Data Send!")
+
+    try:
+        response = requests.post(url, data=ujson.dumps(data), headers=headers)
+        print("Data sent to Flask!")
         print("Response:", response.text)
     except Exception as e:
-        print("Error sending data:", e)	
+        print("Error sending data to Flask:", e)
 
+# Loop utama
 while True:
     try:
         dht_sensor.measure()
         temperature = dht_sensor.temperature()
         humidity = dht_sensor.humidity()
         motion_detected = PIR_PIN.value()
-        
+
         if motion_detected == 1:
             print("Gerakan Terdeteksi!")
             led.value(1)
             buzzer.value(1)
             buzzer_state = 1
             time.sleep(2)
-            buzzer.value(0)
         else:
             led.value(0)
+            buzzer.value(0)
             buzzer_state = 0
-            
-        send_data(temperature, humidity, motion_detected, buzzer_state)
-    
+
+        led_status = led.value()
+        send_data(temperature, humidity, motion_detected, buzzer_state, led_status)
+
     except Exception as e:
         print("Error:", e)
-        
-    time.sleep(2)
+
+    time.sleep(1)  # Indentasi konsisten
