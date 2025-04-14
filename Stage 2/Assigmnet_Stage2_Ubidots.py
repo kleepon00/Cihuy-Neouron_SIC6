@@ -9,7 +9,7 @@ import urequests as requests
 DEVICE_ID = "esp32-cihuy-neuron"
 WIFI_SSID = "SUGENG FAMS"
 WIFI_PASSWORD = "liantina10810"
-FLASK_SERVER_IP = "192.168.1.4"  # Ganti dengan IP komputer yang menjalankan Flask
+FLASK_SERVER_IP = "192.168.1.4" 
 FLASK_PORT = "2008"
 
 # Pin Setup
