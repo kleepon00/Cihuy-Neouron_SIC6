@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # Koneksi ke MongoDB Atlas
 MONGO_USERNAME = "yogagautama"
-MONGO_PASSWORD = "eskelapasaw1t"  
+MONGO_PASSWORD = "eskelapasaw1t"
 MONGO_CLUSTER = "cluster-yoga.wfitb.mongodb.net"
 
 MONGO_URI = f"mongodb+srv://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_CLUSTER}/?retryWrites=true&w=majority"
