@@ -7,17 +7,17 @@ app = Flask(__name__)
 
 # Koneksi ke MongoDB Atlas
 MONGO_USERNAME = "yogagautama"
-MONGO_PASSWORD = "eskelapasaw1t"  # GANTI DENGAN PASSWORD YANG BENAR
+MONGO_PASSWORD = "eskelapasaw1t"  
 MONGO_CLUSTER = "cluster-yoga.wfitb.mongodb.net"
 
 MONGO_URI = f"mongodb+srv://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_CLUSTER}/?retryWrites=true&w=majority"
 client = MongoClient(MONGO_URI)
 
-db = client["Cluster-Yoga"]  # Ganti dengan nama database yang sesuai
+db = client["Cluster-Yoga"]  
 collection = db["Data_Sensor"]
 
 # Konfigurasi Ubidots
-UBIDOTS_TOKEN = "BBUS-SGtqPwDxvpv0n2nHCsZbyqRjP2kvVN"  # Ganti dengan token yang benar
+UBIDOTS_TOKEN = "BBUS-SGtqPwDxvpv0n2nHCsZbyqRjP2kvVN" 
 UBIDOTS_URL = "http://industrial.api.ubidots.com/api/v1.6/devices/esp32-cihuy-neuron"
 
 @app.route("/data", methods=["POST"])
