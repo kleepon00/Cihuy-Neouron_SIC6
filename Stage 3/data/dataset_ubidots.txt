@@ -1,0 +1,32 @@
+Q: What is the average temperature today? <|sep|> A: The average is 29.00.
+
+Q: What is the lowest temperature today? <|sep|> A: The lowest is 29.0.
+
+Q: What is the highest temperature today? <|sep|> A: The highest is 29.0.
+
+Q: What is the current temperature? <|sep|> A: The current value is 29.0.
+
+Q: What is the average humidity today? <|sep|> A: The average is 83.50.
+
+Q: What is the lowest humidity today? <|sep|> A: The lowest is 81.0.
+
+Q: What is the highest humidity today? <|sep|> A: The highest is 84.0.
+
+Q: What is the current humidity? <|sep|> A: The current value is 84.0.
+
+Q: What is the average light today? <|sep|> A: The average is 2373.25.
+
+Q: What is the lowest light today? <|sep|> A: The lowest is 2098.0.
+
+Q: What is the highest light today? <|sep|> A: The highest is 2416.0.
+
+Q: What is the current light? <|sep|> A: The current value is 2414.0.
+
+Q: How many times was dim light detected today? <|sep|> A: It was detected 0 times today.
+
+Q: How many times was led red detected today? <|sep|> A: It was detected 0 times today.
+
+Q: How many times was led yellow detected today? <|sep|> A: It was detected 0 times today.
+
+Q: How many times was led green detected today? <|sep|> A: It was detected 20 times today.
+
